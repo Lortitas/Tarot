@@ -32,6 +32,37 @@ const spreads = {
   }
 };
 
+const spreadLayouts = {
+
+  three: [
+    { x: 100, y: 250 },
+    { x: 380, y: 250 },
+    { x: 660, y: 250 }
+  ],
+
+  five: [
+    { x: 380, y: 250 }, // centro
+    { x: 380, y: 100 }, // arriba
+    { x: 380, y: 400 }, // abajo
+    { x: 100, y: 250 }, // izquierda
+    { x: 660, y: 250 }  // derecha
+  ],
+
+  celtic: [
+    { x: 380, y: 250 }, // 1 centro
+    { x: 380, y: 250, rotate: 90 }, // 2 cruzada
+    { x: 380, y: 400 }, // 3 base
+    { x: 380, y: 100 }, // 4 pasado
+    { x: 100, y: 250 }, // 5 meta
+    { x: 660, y: 250 }, // 6 futuro
+    { x: 820, y: 100 }, // 7 actitud
+    { x: 820, y: 220 }, // 8 entorno
+    { x: 820, y: 340 }, // 9 esperanzas
+    { x: 820, y: 460 }  // 10 resultado
+  ]
+
+};
+
 const deckDiv = document.getElementById("deck");
 const spreadDiv = document.getElementById("spread");
 const readingDiv = document.getElementById("reading");
@@ -123,31 +154,50 @@ function selectCard(cardElement) {
 
   setTimeout(() => {
 
-    cardElement.remove();
+  cardElement.remove();
 
-    const clone = cardElement.cloneNode(true);
-    clone.classList.add("selected");
+  const clone = cardElement.cloneNode(true);
+  clone.classList.add("selected");
 
-    if (reversed) {
-      clone.style.transform = "rotate(180deg)";
+  const reversed = Math.random() < 0.5;
+  let rotation = 0;
+
+  if (mode !== "free") {
+
+    const layout = spreadLayouts[mode][selectedCards.length];
+
+    clone.style.left = layout.x + "px";
+    clone.style.top = layout.y + "px";
+
+    if (layout.rotate) {
+      rotation += layout.rotate;
     }
 
-    if (mode !== "free") {
-      const label = document.createElement("div");
-      label.classList.add("position-label");
-      label.innerText = spreadPositions[selectedCards.length];
-      clone.appendChild(label);
-    }
+    const label = document.createElement("div");
+    label.classList.add("position-label");
+    label.innerText = spreadPositions[selectedCards.length];
+    clone.appendChild(label);
+  }
+  else {
+    // Modo libre alineado
+    clone.style.left = (150 * selectedCards.length) + "px";
+    clone.style.top = "200px";
+  }
 
-    readingDiv.appendChild(clone);
-    selectedCards.push(clone);
+  if (reversed) {
+    rotation += 180;
+  }
 
-    if (selectedCards.length === maxSelection && mode !== "free") {
-      disableSpread();
-    }
+  clone.style.transform = `rotate(${rotation}deg)`;
 
-  }, 600);
-}
+  readingDiv.appendChild(clone);
+  selectedCards.push(clone);
+
+  if (selectedCards.length === maxSelection && mode !== "free") {
+    disableSpread();
+  }
+
+}, 600);
 
 /* Desactivar abanico */
 function disableSpread() {
