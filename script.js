@@ -239,3 +239,26 @@ function resetReading() {
 
   shuffle(deck);
 }
+
+  const spreadArea = document.getElementById("spread-area");
+
+function showCelticCross() {
+  spreadArea.classList.remove("hidden");
+  fillCelticCross();
+}
+
+function hideCelticCross() {
+  spreadArea.classList.add("hidden");
+}
+
+  function fillCelticCross() {
+  const positions = spreadArea.querySelectorAll(".spread-card");
+
+  // Mezclar mazo
+  const shuffled = [...deck].sort(() => Math.random() - 0.5);
+
+  positions.forEach((cardDiv, index) => {
+    const card = shuffled[index];
+    cardDiv.style.backgroundImage = `url(${card.image})`;
+  });
+}
