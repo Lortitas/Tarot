@@ -7,7 +7,24 @@ let mode = "free";
 let maxSelection = Infinity;
 let spreadPositions = [];
 
+const modeSelect = document.getElementById("modeSelect");
+const deckDiv = document.getElementById("deck");
+const spreadDiv = document.getElementById("spread");
 const spreadArea = document.getElementById("spread-area");
+
+modeSelect.addEventListener("change", function () {
+  const mode = this.value;
+
+  // Reset visual
+  spreadDiv.innerHTML = "";
+  spreadArea.classList.add("hidden");
+  deckDiv.style.display = "block";
+
+  if (mode === "celtic") {
+    deckDiv.style.display = "none";
+    showCelticCross();
+  }
+});
 
 function showCelticCross() {
   spreadArea.classList.remove("hidden");
