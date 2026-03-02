@@ -1,5 +1,5 @@
 body {
-  background: radial-gradient(circle at center, #2c2c54, #1e1e2f);
+  background: red !important
   color: white;
   text-align: center;
   font-family: sans-serif;
