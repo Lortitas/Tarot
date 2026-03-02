@@ -58,19 +58,18 @@ const spreadLayouts = {
     { x: 660, y: 250 }
   ],
 
-  celtic: [
-    { x: 380, y: 250 },
-    { x: 380, y: 250, rotate: 90 },
-    { x: 380, y: 400 },
-    { x: 380, y: 100 },
-    { x: 100, y: 250 },
-    { x: 660, y: 250 },
-    { x: 820, y: 100 },
-    { x: 820, y: 220 },
-    { x: 820, y: 340 },
-    { x: 820, y: 460 }
-  ]
-};
+celtic: [
+  { x: 450, y: 300 },                // 1 Centro
+  { x: 450, y: 300, rotate: 90 },    // 2 Cruzada
+  { x: 450, y: 470 },                // 3 Base
+  { x: 450, y: 130 },                // 4 Pasado
+  { x: 260, y: 300 },                // 5 Meta
+  { x: 640, y: 300 },                // 6 Futuro
+  { x: 820, y: 120 },                // 7 Actitud
+  { x: 820, y: 240 },                // 8 Entorno
+  { x: 820, y: 360 },                // 9 Esperanzas
+  { x: 820, y: 480 }                 // 10 Resultado
+]
 
 /* Crear mazo */
 for (let i = 0; i < TOTAL_CARDS; i++) {
