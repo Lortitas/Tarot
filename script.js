@@ -5,8 +5,7 @@ const readingDiv = document.getElementById("reading");
 const modeSelect = document.getElementById("modeSelect");
 
 /* ===== MAZO ===== */
-let deck = [
-  let deck = [];
+let deck = [];
 
 for (let i = 0; i <= 77; i++) {
   deck.push({
