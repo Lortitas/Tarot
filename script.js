@@ -6,12 +6,14 @@ const modeSelect = document.getElementById("modeSelect");
 
 /* ===== MAZO ===== */
 let deck = [
-  { name: "El Loco", image: "images/0.jpg" },
-  { name: "El Mago", image: "images/1.jpg" },
-  { name: "La Sacerdotisa", image: "images/2.jpg" },
-  { name: "La Emperatriz", image: "images/3.jpg" },
-  { name: "El Emperador", image: "images/4.jpg" }
-];
+  let deck = [];
+
+for (let i = 0; i <= 77; i++) {
+  deck.push({
+    name: `Carta ${i}`,
+    image: `images/${i}.jpg`
+  });
+}
 
 /* ===== CREAR ABANICO ===== */
 function createDeckVisual() {
@@ -63,8 +65,8 @@ deckDiv.addEventListener("click", () => {
     const positions = spreadArea.querySelectorAll(".spread-card");
     const shuffled = shuffle(deck);
     positions.forEach((pos, i) => {
-      pos.style.backgroundImage = `url(${shuffled[i % deck.length].image})`;
-    });
+  pos.style.backgroundImage = `url(${shuffled[i % deck.length].image})`;
+  });
   }
 });
 
