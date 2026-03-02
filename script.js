@@ -1,52 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
+
 const TOTAL_CARDS = 78;
+
 let deck = [];
 let selectedCards = [];
-
 let mode = "free";
 let maxSelection = Infinity;
 let spreadPositions = [];
 
+/* DOM */
 const modeSelect = document.getElementById("modeSelect");
 const deckDiv = document.getElementById("deck");
 const spreadDiv = document.getElementById("spread");
-const spreadArea = document.getElementById("spread-area");
+const readingDiv = document.getElementById("reading");
 
-modeSelect.addEventListener("change", function () {
-  const mode = this.value;
-
-  // Reset visual
-  spreadDiv.innerHTML = "";
-  spreadArea.classList.add("hidden");
-  deckDiv.style.display = "block";
-
-  if (mode === "celtic") {
-    deckDiv.style.display = "none";
-    showCelticCross();
-  }
-});
-
-function showCelticCross() {
-  spreadArea.classList.remove("hidden");
-  fillCelticCross();
-}
-
-function hideCelticCross() {
-  spreadArea.classList.add("hidden");
-}
-
-  function fillCelticCross() {
-  const positions = spreadArea.querySelectorAll(".spread-card");
-
-  // Mezclar mazo
-  const shuffled = [...deck].sort(() => Math.random() - 0.5);
-
-  positions.forEach((cardDiv, index) => {
-    const card = shuffled[index];
-    cardDiv.style.backgroundImage = `url(${card.image})`;
-  });
-}
-
+/* Spreads */
 const spreads = {
   three: {
     positions: ["Pasado", "Presente", "Futuro"],
@@ -73,6 +41,7 @@ const spreads = {
   }
 };
 
+/* Layouts */
 const spreadLayouts = {
 
   three: [
@@ -82,59 +51,33 @@ const spreadLayouts = {
   ],
 
   five: [
-    { x: 380, y: 250 }, // centro
-    { x: 380, y: 100 }, // arriba
-    { x: 380, y: 400 }, // abajo
-    { x: 100, y: 250 }, // izquierda
-    { x: 660, y: 250 }  // derecha
+    { x: 380, y: 250 },
+    { x: 380, y: 100 },
+    { x: 380, y: 400 },
+    { x: 100, y: 250 },
+    { x: 660, y: 250 }
   ],
 
   celtic: [
-    { x: 380, y: 250 }, // 1 centro
-    { x: 380, y: 250, rotate: 90 }, // 2 cruzada
-    { x: 380, y: 400 }, // 3 base
-    { x: 380, y: 100 }, // 4 pasado
-    { x: 100, y: 250 }, // 5 meta
-    { x: 660, y: 250 }, // 6 futuro
-    { x: 820, y: 100 }, // 7 actitud
-    { x: 820, y: 220 }, // 8 entorno
-    { x: 820, y: 340 }, // 9 esperanzas
-    { x: 820, y: 460 }  // 10 resultado
+    { x: 380, y: 250 },
+    { x: 380, y: 250, rotate: 90 },
+    { x: 380, y: 400 },
+    { x: 380, y: 100 },
+    { x: 100, y: 250 },
+    { x: 660, y: 250 },
+    { x: 820, y: 100 },
+    { x: 820, y: 220 },
+    { x: 820, y: 340 },
+    { x: 820, y: 460 }
   ]
-
 };
-const spreadArea = document.getElementById("spread-area");
-
-function showCelticCross() {
-  spreadArea.classList.remove("hidden");
-  fillCelticCross();
-}
-function fillCelticCross() {
-  const positions = spreadArea.querySelectorAll(".spread-card");
-
-  // Mezclar mazo
-  const shuffled = [...deck].sort(() => Math.random() - 0.5);
-
-  positions.forEach((cardDiv, index) => {
-    const card = shuffled[index];
-    cardDiv.style.backgroundImage = `url(${card.image})`;
-  });
-}
-
-function hideCelticCross() {
-  spreadArea.classList.add("hidden");
-}
-
-const deckDiv = document.getElementById("deck");
-const spreadDiv = document.getElementById("spread");
-const readingDiv = document.getElementById("reading");
 
 /* Crear mazo */
 for (let i = 0; i < TOTAL_CARDS; i++) {
   deck.push({ id: i, file: `${i}.jpg` });
 }
 
-/* Fisher-Yates */
+/* Fisher-Yates shuffle */
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -144,9 +87,8 @@ function shuffle(array) {
 
 shuffle(deck);
 
-/* Cambiar modo */
-document.getElementById("modeSelect")
-.addEventListener("change", (e) => {
+/* Cambio de modo */
+modeSelect.addEventListener("change", (e) => {
 
   mode = e.target.value;
 
@@ -161,7 +103,7 @@ document.getElementById("modeSelect")
   resetReading();
 });
 
-/* Expandir abanico */
+/* Abrir abanico */
 deckDiv.addEventListener("click", spreadCards);
 
 function spreadCards() {
@@ -216,50 +158,49 @@ function selectCard(cardElement) {
 
   setTimeout(() => {
 
-  cardElement.remove();
+    cardElement.remove();
 
-  const clone = cardElement.cloneNode(true);
-  clone.classList.add("selected");
+    const clone = cardElement.cloneNode(true);
+    clone.classList.add("selected");
 
-  const reversed = Math.random() < 0.5;
-  let rotation = 0;
+    let rotation = 0;
 
-  if (mode !== "free") {
+    if (mode !== "free") {
 
-    const layout = spreadLayouts[mode][selectedCards.length];
+      const layout = spreadLayouts[mode][selectedCards.length];
 
-    clone.style.left = layout.x + "px";
-    clone.style.top = layout.y + "px";
+      clone.style.left = layout.x + "px";
+      clone.style.top = layout.y + "px";
 
-    if (layout.rotate) {
-      rotation += layout.rotate;
+      if (layout.rotate) {
+        rotation += layout.rotate;
+      }
+
+      const label = document.createElement("div");
+      label.classList.add("position-label");
+      label.innerText = spreadPositions[selectedCards.length];
+      clone.appendChild(label);
+
+    } else {
+      clone.style.left = (150 * selectedCards.length) + "px";
+      clone.style.top = "200px";
     }
 
-    const label = document.createElement("div");
-    label.classList.add("position-label");
-    label.innerText = spreadPositions[selectedCards.length];
-    clone.appendChild(label);
-  }
-  else {
-    // Modo libre alineado
-    clone.style.left = (150 * selectedCards.length) + "px";
-    clone.style.top = "200px";
-  }
+    if (reversed) {
+      rotation += 180;
+    }
 
-  if (reversed) {
-    rotation += 180;
-  }
+    clone.style.transform = `rotate(${rotation}deg)`;
 
-  clone.style.transform = `rotate(${rotation}deg)`;
+    readingDiv.appendChild(clone);
+    selectedCards.push(clone);
 
-  readingDiv.appendChild(clone);
-  selectedCards.push(clone);
+    if (selectedCards.length === maxSelection && mode !== "free") {
+      disableSpread();
+    }
 
-  if (selectedCards.length === maxSelection && mode !== "free") {
-    disableSpread();
-  }
-
-}, 600);
+  }, 600);
+}
 
 /* Desactivar abanico */
 function disableSpread() {
@@ -281,14 +222,4 @@ function resetReading() {
   shuffle(deck);
 }
 
-function resetToFreeMode() {
-  spreadArea.classList.add("hidden"); // OCULTAR cruz
-  deckDiv.style.display = "block";    // Mostrar mazo
-  shuffle(deck);
-}  
-
-  function selectCelticCross() {
-  deckDiv.style.display = "none";     // Ocultar mazo
-  showCelticCross();
-}
-  });
+});
