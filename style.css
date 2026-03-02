@@ -1,5 +1,5 @@
 body {
-  background: red !important
+  background: radial-gradient(circle at center, #2c2c54, #1e1e2f);
   color: white;
   text-align: center;
   font-family: sans-serif;
@@ -49,9 +49,6 @@ button:hover {
   transform: translateY(-6px);
 }
 
-.deck {
-  border: 2px solid red;
-}
 /* ABANICO */
 .spread {
   position: relative;
