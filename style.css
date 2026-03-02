@@ -93,24 +93,8 @@ button:hover {
 }
 
 /* Abanico */
-.deck:hover .card:nth-child(1) {
-  transform: rotate(-18deg) translateX(-50px);
-}
-
-.deck:hover .card:nth-child(2) {
-  transform: rotate(-8deg) translateX(-25px);
-}
-
-.deck:hover .card:nth-child(3) {
-  transform: rotate(0deg) translateX(0px);
-}
-
-.deck:hover .card:nth-child(4) {
-  transform: rotate(8deg) translateX(25px);
-}
-
-.deck:hover .card:nth-child(5) {
-  transform: rotate(18deg) translateX(50px);
+.deck:hover .card:nth-child(n) {
+  transform: rotate(calc(-20deg + 4deg * var(--i))) translateX(calc(-60px + 12px * var(--i)));
 }
 
 /* ===== TIRADAS ===== */
