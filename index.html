@@ -2,20 +2,32 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Tablero Tarot RWS</title>
+  <title>Tarot Interactivo</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>Tarot Online</h1>
+<h1>Tarot Online</h1>
 
-  <div class="controls">
-    <button onclick="resetDeck()">Barajar</button>
-    <button onclick="drawCard()">Sacar Carta</button>
-  </div>
+<div class="controls">
+  <select id="modeSelect">
+    <option value="free">Modo libre</option>
+    <option value="three">3 cartas</option>
+    <option value="five">5 cartas</option>
+    <option value="celtic">Cruz Celta</option>
+  </select>
 
-  <div class="table" id="table"></div>
+  <button onclick="resetReading()">Nueva tirada</button>
+</div>
 
-  <script src="script.js"></script>
+<div class="board">
+  <div class="deck" id="deck"></div>
+  <div class="spread" id="spread"></div>
+</div>
+
+<h2>Cartas elegidas</h2>
+<div class="reading" id="reading"></div>
+
+<script src="script.js"></script>
 </body>
 </html>
