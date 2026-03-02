@@ -123,9 +123,10 @@ button:hover {
 
 .spread img {
   width: 120px;
-  height: 180px;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
   border-radius: 10px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.6);
 }
 
 /* ===== CRUZ CELTA ===== */
