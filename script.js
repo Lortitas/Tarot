@@ -8,13 +8,12 @@ let mode = "free";
 let maxSelection = Infinity;
 let spreadPositions = [];
 
-/* DOM */
 const modeSelect = document.getElementById("modeSelect");
 const deckDiv = document.getElementById("deck");
 const spreadDiv = document.getElementById("spread");
 const readingDiv = document.getElementById("reading");
 
-/* Spreads */
+/* SPREADS */
 const spreads = {
   three: {
     positions: ["Pasado", "Presente", "Futuro"],
@@ -41,42 +40,11 @@ const spreads = {
   }
 };
 
-/* Layouts */
-const spreadLayouts = {
-
-  three: [
-    { x: 100, y: 250 },
-    { x: 380, y: 250 },
-    { x: 660, y: 250 }
-  ],
-
-  five: [
-    { x: 380, y: 250 },
-    { x: 380, y: 100 },
-    { x: 380, y: 400 },
-    { x: 100, y: 250 },
-    { x: 660, y: 250 }
-  ],
-
-celtic: [
-  { x: 450, y: 300 },                // 1 Centro
-  { x: 450, y: 300, rotate: 90 },    // 2 Cruzada
-  { x: 450, y: 470 },                // 3 Base
-  { x: 450, y: 130 },                // 4 Pasado
-  { x: 260, y: 300 },                // 5 Meta
-  { x: 640, y: 300 },                // 6 Futuro
-  { x: 820, y: 120 },                // 7 Actitud
-  { x: 820, y: 240 },                // 8 Entorno
-  { x: 820, y: 360 },                // 9 Esperanzas
-  { x: 820, y: 480 }                 // 10 Resultado
-]
-
-/* Crear mazo */
+/* CREAR MAZO */
 for (let i = 0; i < TOTAL_CARDS; i++) {
   deck.push({ id: i, file: `${i}.jpg` });
 }
 
-/* Fisher-Yates shuffle */
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -86,7 +54,7 @@ function shuffle(array) {
 
 shuffle(deck);
 
-/* Cambio de modo */
+/* CAMBIO DE MODO */
 modeSelect.addEventListener("change", (e) => {
 
   mode = e.target.value;
@@ -102,7 +70,7 @@ modeSelect.addEventListener("change", (e) => {
   resetReading();
 });
 
-/* Abrir abanico */
+/* ABRIR ABANICO */
 deckDiv.addEventListener("click", spreadCards);
 
 function spreadCards() {
@@ -145,7 +113,7 @@ function spreadCards() {
   });
 }
 
-/* Seleccionar carta */
+/* SELECCIONAR CARTA */
 function selectCard(cardElement) {
 
   if (cardElement.classList.contains("flipped")) return;
@@ -162,48 +130,22 @@ function selectCard(cardElement) {
     const clone = cardElement.cloneNode(true);
     clone.classList.add("selected");
 
-    let rotation = 0;
+    if (mode === "celtic") {
+      readingDiv.classList.add("celtic");
+    }
 
     if (mode !== "free") {
-
-      if (mode === "celtic") {
-  readingDiv.classList.add("celtic");
-
-  const positions = [
-    "3 / 2", // 1 Centro
-    "3 / 2", // 2 Cruzada
-    "4 / 2", // 3 Base
-    "2 / 2", // 4 Pasado
-    "3 / 1", // 5 Meta
-    "3 / 3", // 6 Futuro
-    "1 / 5", // 7 Actitud
-    "2 / 5", // 8 Entorno
-    "3 / 5", // 9 Esperanzas
-    "4 / 5"  // 10 Resultado
-  ];
-
-  clone.style.gridArea = positions[selectedCards.length];
-}
-
-      if (layout.rotate) {
-        rotation += layout.rotate;
-      }
 
       const label = document.createElement("div");
       label.classList.add("position-label");
       label.innerText = spreadPositions[selectedCards.length];
       clone.appendChild(label);
 
-    } else {
-      clone.style.left = (150 * selectedCards.length) + "px";
-      clone.style.top = "200px";
     }
 
     if (reversed) {
-      rotation += 180;
+      clone.style.transform = "rotate(180deg)";
     }
-
-    clone.style.transform = `rotate(${rotation}deg)`;
 
     readingDiv.appendChild(clone);
     selectedCards.push(clone);
@@ -215,7 +157,7 @@ function selectCard(cardElement) {
   }, 600);
 }
 
-/* Desactivar abanico */
+/* DESACTIVAR ABANICO */
 function disableSpread() {
   const cards = document.querySelectorAll(".card");
   cards.forEach(c => {
@@ -224,7 +166,7 @@ function disableSpread() {
   });
 }
 
-/* Reset */
+/* RESET */
 function resetReading() {
 
   selectedCards = [];
