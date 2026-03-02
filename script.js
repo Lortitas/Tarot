@@ -18,7 +18,7 @@ for (let i = 0; i <= 77; i++) {
 function createDeckVisual() {
   deckDiv.innerHTML = "";
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 78; i++) {
     const card = document.createElement("div");
     card.classList.add("card");
     card.style.backgroundImage = "url('images/back.jpg')";
