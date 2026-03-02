@@ -18,12 +18,30 @@ for (let i = 0; i <= 77; i++) {
 function createDeckVisual() {
   deckDiv.innerHTML = "";
 
-  for (let i = 0; i < 78; i++) {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    card.style.backgroundImage = "url('images/back.jpg')";
-    deckDiv.appendChild(card);
-  }
+  const total = deck.length; // 78 cartas
+  const radius = 600;        // radio del arco
+  const angleStep = 120 / total; // apertura total del abanico
+
+  deck.forEach((card, index) => {
+    const cardDiv = document.createElement("div");
+    cardDiv.classList.add("card");
+
+    // imagen reverso
+    cardDiv.style.backgroundImage = "url('images/back.jpg')";
+
+    // calcular ángulo
+    const angle = -60 + (angleStep * index);
+
+    cardDiv.style.transform = `
+      rotate(${angle}deg)
+      translateY(-${radius}px)
+      rotate(${-angle}deg)
+    `;
+
+    cardDiv.style.transformOrigin = `50% ${radius}px`;
+
+    deckDiv.appendChild(cardDiv);
+  });
 }
 
 /* ===== SHUFFLE ===== */
