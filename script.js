@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 const TOTAL_CARDS = 78;
 let deck = [];
 let selectedCards = [];
@@ -5,6 +6,29 @@ let selectedCards = [];
 let mode = "free";
 let maxSelection = Infinity;
 let spreadPositions = [];
+
+const spreadArea = document.getElementById("spread-area");
+
+function showCelticCross() {
+  spreadArea.classList.remove("hidden");
+  fillCelticCross();
+}
+
+function hideCelticCross() {
+  spreadArea.classList.add("hidden");
+}
+
+  function fillCelticCross() {
+  const positions = spreadArea.querySelectorAll(".spread-card");
+
+  // Mezclar mazo
+  const shuffled = [...deck].sort(() => Math.random() - 0.5);
+
+  positions.forEach((cardDiv, index) => {
+    const card = shuffled[index];
+    cardDiv.style.backgroundImage = `url(${card.image})`;
+  });
+}
 
 const spreads = {
   three: {
@@ -240,25 +264,14 @@ function resetReading() {
   shuffle(deck);
 }
 
-  const spreadArea = document.getElementById("spread-area");
+function resetToFreeMode() {
+  spreadArea.classList.add("hidden"); // OCULTAR cruz
+  deckDiv.style.display = "block";    // Mostrar mazo
+  shuffle(deck);
+}  
 
-function showCelticCross() {
-  spreadArea.classList.remove("hidden");
-  fillCelticCross();
+  function selectCelticCross() {
+  deckDiv.style.display = "none";     // Ocultar mazo
+  showCelticCross();
 }
-
-function hideCelticCross() {
-  spreadArea.classList.add("hidden");
-}
-
-  function fillCelticCross() {
-  const positions = spreadArea.querySelectorAll(".spread-card");
-
-  // Mezclar mazo
-  const shuffled = [...deck].sort(() => Math.random() - 0.5);
-
-  positions.forEach((cardDiv, index) => {
-    const card = shuffled[index];
-    cardDiv.style.backgroundImage = `url(${card.image})`;
   });
-}
