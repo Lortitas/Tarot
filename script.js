@@ -1,181 +1,146 @@
-document.addEventListener("DOMContentLoaded", () => {
+/* ========================= */
+/* ===== VARIABLES ========= */
+/* ========================= */
 
-const TOTAL_CARDS = 78;
-
-let deck = [];
-let selectedCards = [];
-let mode = "free";
-let maxSelection = Infinity;
-let spreadPositions = [];
-
-const modeSelect = document.getElementById("modeSelect");
 const deckDiv = document.getElementById("deck");
 const spreadDiv = document.getElementById("spread");
+const spreadArea = document.getElementById("spread-area");
 const readingDiv = document.getElementById("reading");
+const modeSelect = document.getElementById("modeSelect");
 
-/* SPREADS */
-const spreads = {
-  three: {
-    positions: ["Pasado", "Presente", "Futuro"],
-    max: 3
-  },
-  five: {
-    positions: ["Centro", "Obstáculo", "Base", "Pasado", "Futuro"],
-    max: 5
-  },
-  celtic: {
-    positions: [
-      "Situación",
-      "Desafío",
-      "Base",
-      "Pasado",
-      "Meta",
-      "Futuro",
-      "Actitud",
-      "Entorno",
-      "Esperanzas",
-      "Resultado"
-    ],
-    max: 10
-  }
-};
+let deck = [
+  { name: "El Loco", image: "images/0.jpg" },
+  { name: "El Mago", image: "images/1.jpg" },
+  { name: "La Sacerdotisa", image: "images/2.jpg" },
+  { name: "La Emperatriz", image: "images/3.jpg" },
+  { name: "El Emperador", image: "images/4.jpg" },
+  { name: "El Papa", image: "images/5.jpg" },
+  { name: "Los Enamorados", image: "images/6.jpg" },
+  { name: "El Carro", image: "images/7.jpg" },
+  { name: "La Justicia", image: "images/8.jpg" },
+  { name: "El Ermitaño", image: "images/9.jpg" },
+  { name: "La Rueda", image: "images/10.jpg" },
+  { name: "La Fuerza", image: "images/11.jpg" },
+  { name: "El Colgado", image: "images/12.jpg" },
+  { name: "La Muerte", image: "images/13.jpg" },
+  { name: "La Templanza", image: "images/14.jpg" },
+  { name: "El Diablo", image: "images/15.jpg" },
+  { name: "La Torre", image: "images/16.jpg" },
+  { name: "La Estrella", image: "images/17.jpg" },
+  { name: "La Luna", image: "images/18.jpg" },
+  { name: "El Sol", image: "images/19.jpg" },
+  { name: "El Juicio", image: "images/20.jpg" },
+  { name: "El Mundo", image: "images/21.jpg" }
+];
 
-/* CREAR MAZO */
-for (let i = 0; i < TOTAL_CARDS; i++) {
-  deck.push({ id: i, file: `${i}.jpg` });
-}
+/* ========================= */
+/* ===== UTILIDADES ======== */
+/* ========================= */
 
 function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
+/* ========================= */
+/* ===== CREAR ABANICO ===== */
+/* ========================= */
+
+function createDeckVisual() {
+  deckDiv.innerHTML = "";
+
+  for (let i = 0; i < 5; i++) {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.style.backgroundImage = "url('images/back.jpg')";
+    deckDiv.appendChild(card);
   }
 }
 
-shuffle(deck);
+/* ========================= */
+/* ===== MOSTRAR CARTA ===== */
+/* ========================= */
 
-/* CAMBIO DE MODO */
-modeSelect.addEventListener("change", (e) => {
+function showCard(card) {
+  const img = document.createElement("img");
+  img.src = card.image;
+  spreadDiv.appendChild(img);
 
-  mode = e.target.value;
+  const readingImg = document.createElement("img");
+  readingImg.src = card.image;
+  readingDiv.appendChild(readingImg);
+}
+
+/* ========================= */
+/* ===== MODOS NORMALES ==== */
+/* ========================= */
+
+function drawMultiple(count) {
+  spreadDiv.innerHTML = "";
+  readingDiv.innerHTML = "";
+  spreadArea.classList.add("hidden");
+
+  const shuffled = shuffle(deck);
+
+  for (let i = 0; i < count; i++) {
+    showCard(shuffled[i]);
+  }
+}
+
+/* ========================= */
+/* ===== CRUZ CELTA ======== */
+/* ========================= */
+
+function showCelticCross() {
+  spreadDiv.innerHTML = "";
+  readingDiv.innerHTML = "";
+  spreadArea.classList.remove("hidden");
+
+  const positions = spreadArea.querySelectorAll(".spread-card");
+  const shuffled = shuffle(deck);
+
+  positions.forEach((cardDiv, index) => {
+    cardDiv.style.backgroundImage = `url(${shuffled[index].image})`;
+  });
+}
+
+/* ========================= */
+/* ===== RESET ========= */
+/* ========================= */
+
+function resetReading() {
+  spreadDiv.innerHTML = "";
+  readingDiv.innerHTML = "";
+  spreadArea.classList.add("hidden");
+  createDeckVisual();
+}
+
+/* ========================= */
+/* ===== EVENTOS ========= */
+/* ========================= */
+
+deckDiv.addEventListener("click", () => {
+  const mode = modeSelect.value;
 
   if (mode === "free") {
-    maxSelection = Infinity;
-    spreadPositions = [];
-  } else {
-    maxSelection = spreads[mode].max;
-    spreadPositions = spreads[mode].positions;
+    const shuffled = shuffle(deck);
+    showCard(shuffled[0]);
   }
 
-  resetReading();
+  if (mode === "three") {
+    drawMultiple(3);
+  }
+
+  if (mode === "five") {
+    drawMultiple(5);
+  }
+
+  if (mode === "celtic") {
+    showCelticCross();
+  }
 });
 
-/* ABRIR ABANICO */
-deckDiv.addEventListener("click", spreadCards);
+/* ========================= */
+/* ===== INICIO ========= */
+/* ========================= */
 
-function spreadCards() {
-
-  deckDiv.style.display = "none";
-  spreadDiv.innerHTML = "";
-
-  const angleRange = 120;
-  const startAngle = -60;
-  const angleStep = angleRange / deck.length;
-
-  deck.forEach((card, index) => {
-
-    const cardDiv = document.createElement("div");
-    cardDiv.classList.add("card");
-
-    const angle = startAngle + index * angleStep;
-
-    cardDiv.style.left = `calc(50% - 60px + ${index * 6}px)`;
-    cardDiv.style.top = "120px";
-    cardDiv.style.transform = `rotate(${angle}deg)`;
-
-    const inner = document.createElement("div");
-    inner.classList.add("inner");
-
-    const front = document.createElement("div");
-    front.classList.add("front");
-    front.style.backgroundImage = `url(images/${card.file})`;
-
-    const back = document.createElement("div");
-    back.classList.add("back");
-
-    inner.appendChild(front);
-    inner.appendChild(back);
-    cardDiv.appendChild(inner);
-
-    cardDiv.addEventListener("click", () => selectCard(cardDiv));
-
-    spreadDiv.appendChild(cardDiv);
-  });
-}
-
-/* SELECCIONAR CARTA */
-function selectCard(cardElement) {
-
-  if (cardElement.classList.contains("flipped")) return;
-  if (selectedCards.length >= maxSelection) return;
-
-  cardElement.classList.add("flipped");
-
-  const reversed = Math.random() < 0.5;
-
-  setTimeout(() => {
-
-    cardElement.remove();
-
-    const clone = cardElement.cloneNode(true);
-    clone.classList.add("selected");
-
-    if (mode === "celtic") {
-      readingDiv.classList.add("celtic");
-    }
-
-    if (mode !== "free") {
-
-      const label = document.createElement("div");
-      label.classList.add("position-label");
-      label.innerText = spreadPositions[selectedCards.length];
-      clone.appendChild(label);
-
-    }
-
-    if (reversed) {
-      clone.style.transform = "rotate(180deg)";
-    }
-
-    readingDiv.appendChild(clone);
-    selectedCards.push(clone);
-
-    if (selectedCards.length === maxSelection && mode !== "free") {
-      disableSpread();
-    }
-
-  }, 600);
-}
-
-/* DESACTIVAR ABANICO */
-function disableSpread() {
-  const cards = document.querySelectorAll(".card");
-  cards.forEach(c => {
-    c.style.opacity = "0.3";
-    c.style.pointerEvents = "none";
-  });
-}
-
-/* RESET */
-function resetReading() {
-
-  selectedCards = [];
-  readingDiv.innerHTML = "";
-  readingDiv.classList.remove("celtic");
-  spreadDiv.innerHTML = "";
-  deckDiv.style.display = "block";
-
-  shuffle(deck);
-}
-
-});
+createDeckVisual();
