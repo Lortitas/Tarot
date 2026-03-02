@@ -49,6 +49,9 @@ button:hover {
   transform: translateY(-6px);
 }
 
+.deck {
+  border: 2px solid red;
+}
 /* ABANICO */
 .spread {
   position: relative;
