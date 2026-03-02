@@ -30,4 +30,167 @@ h2 {
 }
 
 select, button {
-  padding: 10px 14px
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  margin: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button {
+  background-color: #6366f1;
+  color: white;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #4f46e5;
+}
+
+/* ===== BOARD ===== */
+.board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+/* ===== MAZO ===== */
+.deck {
+  position: relative;
+  width: 140px;
+  height: 200px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.deck::before {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 180px;
+  top: 10px;
+  left: 10px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+/* Cartas del abanico */
+.card {
+  position: absolute;
+  width: 120px;
+  height: 180px;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  left: 10px;
+  top: 10px;
+  transition: transform 0.4s ease;
+}
+
+/* Abanico */
+.deck:hover .card:nth-child(1) {
+  transform: rotate(-18deg) translateX(-50px);
+}
+
+.deck:hover .card:nth-child(2) {
+  transform: rotate(-8deg) translateX(-25px);
+}
+
+.deck:hover .card:nth-child(3) {
+  transform: rotate(0deg) translateX(0px);
+}
+
+.deck:hover .card:nth-child(4) {
+  transform: rotate(8deg) translateX(25px);
+}
+
+.deck:hover .card:nth-child(5) {
+  transform: rotate(18deg) translateX(50px);
+}
+
+/* ===== TIRADAS ===== */
+.spread {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.spread img {
+  width: 120px;
+  height: 180px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+}
+
+/* ===== CRUZ CELTA ===== */
+.celtic-cross {
+  position: relative;
+  width: 600px;
+  height: 500px;
+  margin: 0 auto 40px;
+  z-index: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+.spread-card {
+  position: absolute;
+  width: 120px;
+  height: 180px;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  background-color: #1e293b;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+}
+
+/* Posiciones */
+.pos1 { top: 160px; left: 200px; }
+.pos2 { top: 160px; left: 200px; transform: rotate(90deg); }
+.pos3 { top: 300px; left: 200px; }
+.pos4 { top: 20px; left: 200px; }
+.pos5 { top: 160px; left: 60px; }
+.pos6 { top: 160px; left: 340px; }
+
+.pos7 { top: 20px; left: 470px; }
+.pos8 { top: 120px; left: 470px; }
+.pos9 { top: 220px; left: 470px; }
+.pos10 { top: 320px; left: 470px; }
+
+/* ===== READING ===== */
+.reading {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.reading img {
+  width: 100px;
+  height: 150px;
+  border-radius: 8px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+
+  .board {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .celtic-cross {
+    transform: scale(0.7);
+    transform-origin: top center;
+    height: 380px;
+  }
+
+}
