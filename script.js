@@ -166,10 +166,24 @@ function selectCard(cardElement) {
 
     if (mode !== "free") {
 
-      const layout = spreadLayouts[mode][selectedCards.length];
+      if (mode === "celtic") {
+  readingDiv.classList.add("celtic");
 
-      clone.style.left = layout.x + "px";
-      clone.style.top = layout.y + "px";
+  const positions = [
+    "3 / 2", // 1 Centro
+    "3 / 2", // 2 Cruzada
+    "4 / 2", // 3 Base
+    "2 / 2", // 4 Pasado
+    "3 / 1", // 5 Meta
+    "3 / 3", // 6 Futuro
+    "1 / 5", // 7 Actitud
+    "2 / 5", // 8 Entorno
+    "3 / 5", // 9 Esperanzas
+    "4 / 5"  // 10 Resultado
+  ];
+
+  clone.style.gridArea = positions[selectedCards.length];
+}
 
       if (layout.rotate) {
         rotation += layout.rotate;
@@ -215,6 +229,7 @@ function resetReading() {
 
   selectedCards = [];
   readingDiv.innerHTML = "";
+  readingDiv.classList.remove("celtic");
   spreadDiv.innerHTML = "";
   deckDiv.style.display = "block";
 
