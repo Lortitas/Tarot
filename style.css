@@ -99,6 +99,7 @@ button:hover {
   backface-visibility: hidden;
 }
 
+
 .back {
   background-image: url("images/back.jpg");
 }
@@ -202,4 +203,8 @@ button:hover {
 .pos10 {
   top: 550px;
   left: 650px;
+}
+
+.hidden {
+  display: none;
 }
